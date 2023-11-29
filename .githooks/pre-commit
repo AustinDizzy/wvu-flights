@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Check if the commit includes changes to "flights.db"
+if git diff --cached --name-only | grep -q "flights.db"; then
+    # Update the "last_updated" line in "web/data/meta.yml" with the current Unix timestamp
+    timestamp=$(date +%s)
+    sed -i.bak "s/last_updated: .*/last_updated: $timestamp/" web/data/meta.yml && rm web/data/meta.yml.bak
+
+    # Stage the changes to "web/data/meta.yml"
+    git add web/data/meta.yml
+
+    # Print a message indicating the update
+    echo "Updated last_updated timestamp in meta.yml to: $timestamp"
+fi

@@ -1,0 +1,5 @@
+[build.assets]
+css = [ "css/styles.css" ]
+
+[markup.goldmark.renderer]
+hardWraps = true

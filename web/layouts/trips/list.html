@@ -1,0 +1,24 @@
+{{ define "main" }}
+<div class="lg:flex lg:items-center lg:justify-between mb-8">
+    <div class="min-w-0 flex-1">
+        {{ partial "navbar.html" . }}
+        <h2 class="text-center leading-2 text-2xl font-bold">Most Recent Trips</h2>
+        <p class="max-w-xl mx-auto text-center mb-4">All trips sorted by date, newest first</p>
+        <p class="max-w-xl mx-auto text-center text-sm">
+            Also view: 
+            {{ $sortPages := where (where .Site.Pages "Section" "trips") "Params.layout" "sort" }}
+            {{ range $i, $e := $sortPages -}}
+            {{ if gt $i 0 }}, {{ end }}
+            <a href="{{ $e.RelPermalink }}" class="font-medium text-gray-500 hover:text-gray-700">{{ $e.Params.page_title }}</a>
+            {{- end }}
+        </p>
+        <hr class="max-w-xl mb-4 mt-2 mx-auto">
+        {{ $pages := where (where .Site.Pages "Section" "trips") "Params.id" "!=" nil }}
+        {{ $pages = $pages.ByParam "startdate" }}
+        {{ range (.Paginate $pages.Reverse 7).Pages }}
+        {{ .Render "card" }}
+        {{ end }}
+        {{ template "_internal/pagination.html" . }}
+    </div>
+</div>
+{{ end }}

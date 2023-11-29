@@ -1,0 +1,61 @@
+<a href="{{ .RelPermalink }}"
+    class="block max-w-xl mx-auto p-4 border border-gray-300 hover:border-gray-500 hover:bg-slate-200 rounded my-4" data-id="{{ .Params.id }}" data-total-trips="{{ .Params.totaltrips }}" data-total-distance="{{ .Params.totaldistance }}" data-total-trip-cost="{{ .Params.totaltripcost }}">
+    <p class="leading-7 text-gray-900 text-lg font-bold sm:truncate sm:tracking-tight col-span-5">{{ .Params.name }}</p>
+    <p class="leading-5">{{ with .Params.lastdept }}{{ . }}{{ end }} {{ with .Params.lastvpdiv }}{{ if ne . "<blank>" }}({{ . }}){{ end }}{{ end }}</p>
+    <hr class="my-2">
+    <div class="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-6">
+        <div class="mt-2 flex items-center text-sm text-gray-600 font-semibold">
+            w/ others
+        </div>
+        <div class="mt-2 flex items-center text-sm text-gray-500">
+            <span class="text-bold text-[110%] p-1">#</span>
+            {{ .Params.totaltrips | lang.FormatNumber 0 }} trips
+        </div>
+        <div class="mt-2 flex items-center text-sm text-gray-500">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-1.5 h-5 w-5 flex-shrink-0">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+            </svg>
+            {{ .Params.totaltripdistance | lang.FormatNumber 2 }} <abbr class="ml-0.5" title="nautical miles">nmi.</abbr>
+        </div>
+        <div class="mt-2 flex items-center text-sm">
+            <svg class="mr-1.5 h-5 w-5 flex-shrink-0 {{ if gt .Params.totaltripcost (mul .Site.Data.meta.year_tuition 4) }}text-red-500{{ else if gt .Params.totaltripcost .Site.Data.meta.year_tuition }}text-yellow-500{{ else }}text-gray-400{{ end }}"
+                viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path
+                    d="M10.75 10.818v2.614A3.13 3.13 0 0011.888 13c.482-.315.612-.648.612-.875 0-.227-.13-.56-.612-.875a3.13 3.13 0 00-1.138-.432zM8.33 8.62c.053.055.115.11.184.164.208.16.46.284.736.363V6.603a2.45 2.45 0 00-.35.13c-.14.065-.27.143-.386.233-.377.292-.514.627-.514.909 0 .184.058.39.202.592.037.051.08.102.128.152z" />
+                <path fill-rule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-6a.75.75 0 01.75.75v.316a3.78 3.78 0 011.653.713c.426.33.744.74.925 1.2a.75.75 0 01-1.395.55 1.35 1.35 0 00-.447-.563 2.187 2.187 0 00-.736-.363V9.3c.698.093 1.383.32 1.959.696.787.514 1.29 1.27 1.29 2.13 0 .86-.504 1.616-1.29 2.13-.576.377-1.261.603-1.96.696v.299a.75.75 0 11-1.5 0v-.3c-.697-.092-1.382-.318-1.958-.695-.482-.315-.857-.717-1.078-1.188a.75.75 0 111.359-.636c.08.173.245.376.54.569.313.205.706.353 1.138.432v-2.748a3.782 3.782 0 01-1.653-.713C6.9 9.433 6.5 8.681 6.5 7.875c0-.805.4-1.558 1.097-2.096a3.78 3.78 0 011.653-.713V4.75A.75.75 0 0110 4z"
+                    clip-rule="evenodd" />
+            </svg>
+            <span class="text-gray-500">{{ .Params.totaltripcost | lang.FormatCurrency 2 "USD" }}</span>
+        </div>
+    </div>
+    {{ if .Params.totalsolotrips }}
+    <hr class="my-2">
+    <div class="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-6">
+        <div class="mt-2 flex items-center text-sm text-gray-600 font-semibold">
+            solo
+        </div>
+        <div class="mt-2 flex items-center text-sm text-gray-500">
+            <span class="text-bold text-[110%] p-1">#</span>
+            {{ .Params.totalsolotrips | lang.FormatNumber 0 }} trips
+        </div>
+        <div class="mt-2 flex items-center text-sm text-gray-500">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-1.5 h-5 w-5 flex-shrink-0">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+            </svg>
+            {{ .Params.totalsolodistance | lang.FormatNumber 2 }} <abbr class="ml-0.5" title="nautical miles">nmi.</abbr>
+        </div>
+        <div class="mt-2 flex items-center text-sm">
+            <svg class="mr-1.5 h-5 w-5 flex-shrink-0 {{ if gt .Params.totalsolocost (mul .Site.Data.meta.year_tuition 4) }}text-red-500{{ else if gt .Params.totalsolocost .Site.Data.meta.year_tuition }}text-yellow-500{{ else }}text-gray-400{{ end }}"
+                viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path
+                    d="M10.75 10.818v2.614A3.13 3.13 0 0011.888 13c.482-.315.612-.648.612-.875 0-.227-.13-.56-.612-.875a3.13 3.13 0 00-1.138-.432zM8.33 8.62c.053.055.115.11.184.164.208.16.46.284.736.363V6.603a2.45 2.45 0 00-.35.13c-.14.065-.27.143-.386.233-.377.292-.514.627-.514.909 0 .184.058.39.202.592.037.051.08.102.128.152z" />
+                <path fill-rule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-6a.75.75 0 01.75.75v.316a3.78 3.78 0 011.653.713c.426.33.744.74.925 1.2a.75.75 0 01-1.395.55 1.35 1.35 0 00-.447-.563 2.187 2.187 0 00-.736-.363V9.3c.698.093 1.383.32 1.959.696.787.514 1.29 1.27 1.29 2.13 0 .86-.504 1.616-1.29 2.13-.576.377-1.261.603-1.96.696v.299a.75.75 0 11-1.5 0v-.3c-.697-.092-1.382-.318-1.958-.695-.482-.315-.857-.717-1.078-1.188a.75.75 0 111.359-.636c.08.173.245.376.54.569.313.205.706.353 1.138.432v-2.748a3.782 3.782 0 01-1.653-.713C6.9 9.433 6.5 8.681 6.5 7.875c0-.805.4-1.558 1.097-2.096a3.78 3.78 0 011.653-.713V4.75A.75.75 0 0110 4z"
+                    clip-rule="evenodd" />
+            </svg>
+            <span class="text-gray-500">{{ .Params.totalsolocost | lang.FormatCurrency 2 "USD" }}</span>
+        </div>
+    </div>
+    {{ end }}
+</a>

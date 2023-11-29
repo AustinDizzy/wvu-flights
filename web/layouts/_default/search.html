@@ -1,0 +1,73 @@
+{{ define "main" }}
+{{ $pages := where (where .Site.Pages "Section" "trips") "Params.id" "!=" nil }}
+<div class="lg:flex lg:items-center lg:justify-between">
+    <div class="min-w-0 flex-1">
+        {{ partial "navbar.html" . }}
+        <form class="mt-12 max-w-4xl mx-auto" id="search-form">
+            <label for="search-input"
+                class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    </svg>
+                </div>
+                <input type="search" id="search-input"
+                    class="block w-full p-4 ps-10 text-sm text-gray-900 border rounded-lg bg-slate-100 border-gray-500 placeholder-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Search Trips by justification, notes, passenger names, or route ..." required>
+                <button type="submit"
+                    class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg> Search
+                </button>
+            </div>
+            <div class="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0 mt-4 justify-end">
+                <b class="text-sm">Sort by</b>
+                <div class="flex items-center">
+                  <input id="sort-relevance" name="sort-by" type="radio" checked class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+                  <label for="sort-relevance" class="ml-3 block text-sm font-medium leading-6 text-gray-900">Relevance</label>
+                </div>
+                <div class="flex items-center">
+                  <input id="sort-date" name="sort-by" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+                  <label for="sort-date" class="ml-3 block text-sm font-medium leading-6 text-gray-900">Date</label>
+                </div>
+                <div class="flex items-center">
+                  <input id="sort-cost" name="sort-by" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+                  <label for="sort-cost" class="ml-3 block text-sm font-medium leading-6 text-gray-900">Cost</label>
+                </div>
+            </div>
+        </form>
+        <p id="search-results-count" class="mt-5 mb-4 text-center"></p>
+        <div id="search-results">
+            {{ range $pages }}
+                {{ .Render "card" }}
+            {{ end }}
+        </div>
+        <p id="search-results-message" class="text-center my-5"></p>
+        <div class="relative border border-gray-300 p-8 rounded-md max-w-xl mx-auto mt-16">
+            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-4">
+              <span class="text-md font-semibold">Search Tips</span>
+            </div>
+            <ul class="list-disc">
+                <li>search is indexed on justification, passengers and route.</li>
+                <li>you can search on one specific column like so <code>route:MRB</code></li>
+                <li>wildcard (<code>*</code>) use is supported</li>
+                <li>use <code>+</code> to require a term, use <code>-</code> to negate a term<br>(Ex: <code>+required -removed</code>)</li>
+                <li>for more see <a href="https://lunrjs.com/guides/searching.html" target="_blank" class="hover:underline text-blue-700">Lunr.js's "Searching" article</a></li>
+            </ul>
+            <hr class="my-4">
+            <p>
+                For more advanced queries, including the ability to run SQL queries on the data, see the <a href="https://l.abs.codes/data/wvu-data/flights" target="_blank" class="underline text-blue-700">Datasette instance</a>.
+            </p>
+        </div>
+    </div>
+</div>
+{{ end }}
+
+{{ define "page_scripts" }}
+{{ partial "script.html" "js/search.js" }}
+
+{{ end }}

@@ -1,0 +1,15 @@
+{{ define "main" }}
+<div class="lg:flex lg:items-center lg:justify-between mb-8">
+    <div class="min-w-0 flex-1">
+        {{ partial "navbar.html" . }}
+        {{ $pages := where (where .Site.Pages "Section" "invoices") "Params.name" "!=" nil }}
+        <h2 class="text-center leading-2 text-2xl font-bold">All Flight Invoices ({{ len $pages}})</h2>
+        <p class="max-w-xl mx-auto text-center mb-4">All invoices sorted by date, newest first</p>
+        <hr class="max-w-xl mb-4 mt-2 mx-auto">
+        {{ range ($pages.ByParam "name").Reverse }}
+        {{ .Render "card" }}
+        {{ end }}
+    </div>
+</div>
+<p class="text-center text-gray-500">&dagger; : Federal Excise Tax is only an estimate of the actual, at 7.5%.</p>
+{{ end }}

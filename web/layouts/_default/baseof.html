@@ -1,0 +1,20 @@
+{{ partial "dochead.html" . }}
+{{ partial "header.html" . }}
+{{- block "main" . }}{{- end }}
+<div class="mx-auto py-8 max-w-[80%]">
+    <p class="text-center text-gray-400 text-sm">
+        Information on this site was obtained from a legal request pursuant to W.Va. Code § 29B-1-1 et. seq. (WVFOIA) and is provided for informational purposes only.
+        <br><br>
+        This site is not affiliated with West Virginia University or LJ Aviation.
+        <br><br>
+        <a href="mailto:{{ .Site.Data.meta.contact_email }}" class="hover:underline">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 pr-2 inline">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+            </svg>              
+            <code class="text-[85%]">{{ .Site.Data.meta.contact_email }}</code>
+        </a>
+    </p>
+</div>
+{{ block "page_scripts" . }}{{ end }}
+</body>
+</html>

@@ -1,0 +1,113 @@
+<div 
+    class="block mx-auto p-4 border border-gray-300 hover:border-gray-500 hover:bg-slate-200 rounded my-4 max-w-fit" data-name="{{ .Params.name }}" data-total-trips="{{ .Params.totaltrips }}" data-total-cost="{{ .Params.totalcost }}" id="{{ .Params.name }}">
+    {{ $year := index (split .Params.name "-" ) 0 }}
+    {{ $month := dateFormat "January" (printf "%s-01" .Params.name) }}
+    <div class="grid grid-flow-col grid-cols-3">
+        <div class="col text-gray-400 hover:text-gray-600 px-4">
+            <a href="/invoices/#{{ .Params.name }}">
+                # {{.Params.name}}
+            </a>
+        </div>
+        <a href="{{ .Params.linkto }}" class="leading-7 text-gray-900 text-lg font-bold sm:tracking-tight text-center col">
+            {{ $month }} {{ $year }}
+        </a>
+        <div class="col text-right">
+            <a href="{{ .Params.linkto }}">
+                <button type="button" class="inline-flex items-center gap-x-1.5 rounded-md bg-slate-400 px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25M9 16.5v.75m3-3v3M15 12v5.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                      </svg>                  
+                    Open PDF
+                </button>
+            </a>
+        </div>
+    </div>
+    <p class="leading-5 text-center">{{ if eq .Params.invoicetype "month" }}monthly{{ else }}trip{{ end }} invoice</p>
+    <hr class="my-2">
+    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+        <table class="table-auto divide-y divide-gray-300 mx-auto">
+            <thead>
+            <tr>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900 sm:pl-0">Trip ID</th>
+                <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Date</th>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Route</th>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Aircraft</th>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Passengers</th>
+                <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Pilots</th>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Fuel Surcharge</th>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Landing Fees</th>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Crew Expenses</th>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Dom. Seg. Tax</th>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Flight Hours</th>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Hourly Rate</th>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Billing Amount</th>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Total Cost</th>
+            </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+                {{ $totalFuelCost := 0 }}
+                {{ $totalLandingFees := 0 }}
+                {{ $totalCrewExpenses := 0 }}
+                {{ $totalDomesticTax := 0 }}
+                {{ $totalFlightHours := 0 }}
+                {{ $totalBillingAmount := 0 }}
+                {{ range .Params.trips }}
+            <tr>
+                <td class="relative py-2 px-2 text-sm font-medium">
+                    <a href="/trips/{{ .id }}" class="text-blue-900 hover:text-purple-900">#{{ .id }}</a>
+                </td>
+                <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm sm:pl-0">{{ partial "date_range.html" . }}</td>
+                <td class="px-2 py-2 text-sm font-medium text-gray-900">{{ .route }}</td>
+                <td class="px-2 py-2 text-sm text-gray-900">{{ printf "%s (%s)" .aircraft .regno }}</td>
+                <td class="px-2 py-2 text-sm">{{ $nPax := len .passengers }}{{ range $i, $elm := (sort .passengers "paxno") -}}
+                    <a class="border-b border-dotted border-black" href="/passengers/{{ .personname | lower | replaceRE `[^a-z0-9']+` "-" | replaceRE `^[-']+|[-']+$` "" }}">
+                        {{ $nTok := strings.Count " " $elm.personname}}
+                        {{ $lastN := index (split $elm.personname " ") $nTok }}
+                        {{ index (split $elm.personname " ") 0 | first 1 }}. {{ if in (slice "SR" "JR" "III" "IV") $lastN }}{{index (split $elm.personname " ") (sub $nTok 1) }} {{ end }}{{ $lastN }}
+                    </a>{{ if lt $i (sub $nPax 1) }}, {{ end }}
+                    {{- end }}
+                </td>
+                <td class="whitespace-nowrap px-2 py-2 text-sm">{{ range $i, $elm  := .crew -}}
+                    <p>
+                        {{ $nTok := strings.Count " " $elm}}
+                        {{ $lastN := index (split $elm " ") $nTok }}
+                        {{ index (split $elm " ") 0 | first 1 }}. {{ if in (slice "SR" "JR" "III" "IV") $lastN }}{{index (split $elm " ") (sub $nTok 1) }} {{ end }}{{ $lastN }}{{ if lt $i (sub $nPax 1) }}<br>{{ end }}
+                        {{- end }}
+                    </p>
+                </td>
+                {{ $totalFuelCost = add $totalFuelCost .cost.fuel }}
+                {{ $totalLandingFees = add $totalLandingFees .cost.landing_fees }}
+                {{ $totalCrewExpenses = add $totalCrewExpenses .cost.crew_expense }}
+                {{ $totalDomesticTax = add $totalDomesticTax .cost.domestic_tax }}
+                {{ $totalFlightHours = add $totalFlightHours .flighthours }}
+                {{ $totalBillingAmount = add $totalBillingAmount .cost.billing_amount }}
+                <td class="px-2 py-2 text-sm text-gray-700">{{ lang.FormatCurrency 2 "USD" .cost.fuel }}</td>
+                <td class="px-2 py-2 text-sm text-gray-700">{{ lang.FormatCurrency 2 "USD" .cost.landing_fees }}</td>
+                <td class="px-2 py-2 text-sm text-gray-700">{{ lang.FormatCurrency 2 "USD" .cost.crew_expense }}</td>
+                <td class="px-2 py-2 text-sm text-gray-700">{{if gt .cost.domestic_tax 0}}{{ lang.FormatCurrency 2 "USD" .cost.domestic_tax }}{{ else }}-{{ end }}</td>
+                <td class="px-2 py-2 text-sm text-gray-700">{{ $fl := string .flighthours }}{{ $fl }}{{if not (strings.Contains $fl ".") }}.0{{end}}</td>
+                <td class="px-2 py-2 text-sm text-gray-700">{{ lang.FormatCurrency 2 "USD" .cost.hourly_rate }}</td>
+                <td class="px-2 py-2 text-sm text-gray-700">{{ lang.FormatCurrency 2 "USD" .cost.billing_amount }}</td>
+                <td class="px-2 py-2 text-sm">{{ lang.FormatCurrency 2 "USD" .totalcost }}</td>
+            </tr>
+            {{ end }}
+            <tr>
+                <td colspan="4" class="px-2 py-2 text-sm font-medium">{{ printf "%d trips" .Params.totaltrips }}</td>
+                <td colspan="2" class="text-right pl-2 pr-4 py-2 text-sm font-medium">Total Flight Cost</td>
+                <td class="px-2 py-2 text-sm">{{ lang.FormatCurrency 2 "USD" $totalFuelCost }}</td>
+                <td class="px-2 py-2 text-sm">{{ lang.FormatCurrency 2 "USD" $totalLandingFees }}</td>
+                <td class="px-2 py-2 text-sm">{{ lang.FormatCurrency 2 "USD" $totalCrewExpenses }}</td>
+                <td class="px-2 py-2 text-sm">{{ if eq $totalDomesticTax 0 }}-{{ else }}{{ lang.FormatCurrency 2 "USD" $totalDomesticTax }}{{ end }}</td>
+                <td class="px-2 py-2 text-sm">{{ printf "%.2f" $totalFlightHours }}</td>
+                <td class="px-2 py-2 text-sm">-</td>
+                <td class="px-2 py-2 text-sm">{{ lang.FormatCurrency 2 "USD" $totalBillingAmount }}</td>
+                <td class="px-2 py-2 text-sm font-semibold">{{ lang.FormatCurrency 2 "USD" .Params.totalcost }}</td>
+            </tr>
+            <tr>
+                <td colspan="13" class="px-2 py-2 text-sm text-right text-gray-700">est. Federal Excise Tax<sup>&dagger;</sup></td>
+                <td class="px-2 py-2 text-sm text-gray-700">{{ lang.FormatCurrency 2 "USD" (mul .Params.totalcost 0.075) }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

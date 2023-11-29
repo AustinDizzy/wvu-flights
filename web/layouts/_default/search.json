@@ -1,0 +1,16 @@
+{{- $result := slice -}}
+
+{{- range (where (where .Site.RegularPages "Section" "trips") "Params.id" "!=" nil).Reverse -}}
+    {{- $pax := "" -}}
+    {{- $lastIndex := sub (len .Params.passengers) 1 -}}
+    {{- range $index, $passenger := .Params.passengers -}}
+        {{- $pax = printf "%s%s" $pax $passenger.personname -}}
+        {{- if ne $index $lastIndex -}}
+            {{- $pax = printf "%s%s" $pax ";" -}}
+        {{- end -}}
+    {{- end -}}
+    {{- $data := dict "justification" .Params.justification "route" .Params.route "passengers" $pax "trip" .Params.id "id" .File.UniqueID -}}
+    {{- $result = $result | append $data -}}
+{{- end -}}
+
+{{ jsonify $result }}

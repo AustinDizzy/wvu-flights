@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!-- <title>{{ if and (ne .Page.Title .Site.Title) .IsPage}}{{.Page.Title}} – {{end}}{{.Site.Title}}</title> -->
+    <title>{{ $.Site.Title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {{- with $.Params.keywords }}
+    <meta name="keywords" content="{{ delimit . ", " }}" />
+    {{- end }}
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>">
+
+    {{- $styles := resources.Get "css/styles.css" | postCSS (dict "config" "./postcss.config.js") -}}
+    {{- if .Site.IsServer }}
+    {{ $styles = $styles | resources.ExecuteAsTemplate (printf "css/styles.dev.%v.css" now.UnixMilli) .}}
+    {{ else }}
+    {{ $styles = $styles | minify | fingerprint | resources.PostProcess }}
+    {{ end -}}
+    <link rel="stylesheet" href="{{ $styles.RelPermalink }}">
+
+</head>
+
+<body class="bg-white">

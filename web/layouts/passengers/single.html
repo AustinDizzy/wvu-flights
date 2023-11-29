@@ -1,0 +1,173 @@
+{{ define "main" }}
+{{ partial "navbar.html" . }}
+{{ $paxCost := 0 }}
+{{ range .Params.trips }}
+    {{ if gt .numpax 0 }}
+        {{ $paxCost = add $paxCost (div .totalcost .numpax) }}
+    {{ end }}
+{{ end }}
+<div class="max-w-6xl mx-auto pb-16">
+    <div class="sm:grid sm:grid-cols-3">
+        <div class="mt-2 leading-7 mb-8 col col-span-2 sm:tracking-tight">
+            <h2 class="mt-2 text-2xl font-bold  text-gray-900 sm:text-3xl">{{ .Params.name }}</h2>
+            <h3 class="text-gray-800 text-lg sm:text-xl {{if eq .Params.lastdept  "<blank>"}}italic{{end}}">{{ .Params.lastdept }}</h3>
+            <h3 class="text-gray-800 text-lg sm:text-xl {{if eq .Params.lastvpdiv  "<blank>"}}italic{{end}}">{{ .Params.lastvpdiv }}</h3>
+        </div>
+        <div class="relative border border-gray-300 bg-white p-6 pb-2 mt-6 rounded-md col">
+            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white px-4">
+              <span class="text-md font-semibold">Passenger Statistics</span>
+            </div>
+            <ol class="max-w-sm">
+                <li class="grid grid-cols-5 mb-2">
+                    <div class="font-semibold col-span-2">No. of Trips</div>
+                    <div class="col-span-3">{{ .Params.totaltrips }}</div>
+                </li>
+                <li class="grid grid-cols-5 mb-2">
+                    <div class="font-semibold col-span-2">Total Miles</div>
+                    <div class="col-span-3">{{ lang.FormatNumberCustom 2 .Params.totaltripdistance }} <abbr title="nautical miles">nmi</abbr></div>
+                </li>
+                <li class="grid grid-cols-5 mb-2">
+                    <div class="font-semibold col-span-2">Passenger Cost</div>
+                    <div class="col-span-3">{{ lang.FormatCurrency 2 "USD" $paxCost }}</div>
+                </li>
+                <li class="grid grid-cols-5 mb-2">
+                    <div class="font-semibold col-span-2">Total Trip Cost</div>
+                    <div class="col-span-3">{{ lang.FormatCurrency 2 "USD" .Params.totaltripcost }}</div>
+                </li>
+            </ol>
+            {{ if gt .Params.totalsolotrips 0 }}
+            <div class="relative border border-gray-300 bg-white p-6 pb-2 mt-6 rounded-md col">
+                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white px-4">
+                  <span class="text-md font-semibold">Solo Trips</span>
+                </div>
+                <ol class="max-w-sm">
+                    <li class="grid grid-cols-5 mb-2">
+                        <div class="font-semibold col-span-2">No. of Trips</div>
+                        <div class="col-span-3">{{ .Params.totalsolotrips }}</div>
+                    </li>
+                    <li class="grid grid-cols-5 mb-2">
+                        <div class="font-semibold col-span-2">Total Trip Cost</div>
+                        <div class="col-span-3">{{ lang.FormatCurrency 2 "USD" .Params.totalsolocost }}</div>
+                    </li>
+                    <li class="grid grid-cols-5 mb-2">
+                        <div class="font-semibold col-span-2">Total Miles</div>
+                        <div class="col-span-3">{{ lang.FormatNumberCustom 2 .Params.totalsolodistance }} <abbr title="nautical miles">nmi</abbr></div>
+                    </li>
+                </ol>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+    <hr class="my-4">
+    <div class="grid grid-cols-5 items-center">
+        <h3 class="text-xl font-bold leading-5 col col-span-3">Most Recent Trips</h3>
+        <ul class="items-center w-full text-sm font-medium text-gray-900 rounded-lg flex col col-span-2">
+            <li class="w-full">
+                <div class="flex items-center ps-3">
+                    <input id="horizontal-list-radio-license" type="radio" value="startdate" name="list-radio" class="w-4 h-4" checked>
+                    <label for="horizontal-list-radio-license" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">Most Recent</label>
+                </div>
+            </li>
+            <li class="w-full">
+                <div class="flex items-center ps-3">
+                    <input id="horizontal-list-radio-id" type="radio" value="totalcost" name="list-radio" class="w-4 h-4">
+                    <label for="horizontal-list-radio-id" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">Most Expensive</label>
+                </div>
+            </li>
+            <li class="w-full">
+                <div class="flex items-center ps-3">
+                    <input id="horizontal-list-radio-military" type="radio" value="flighthours" name="list-radio" class="w-4 h-4">
+                    <label for="horizontal-list-radio-military" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">Longest</label>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="w-[100%] py-2 align-middle sm:px-6 lg:px-8 mx-auto">
+        <table class="table-auto divide-y divide-gray-300 mx-auto">
+            <thead>
+            <tr>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900 sm:pl-0">Trip ID</th>
+                <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Date</th>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Route</th>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Aircraft</th>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Passengers</th>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Distance</th>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Flight Hours</th>
+                <th scope="col" class="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Total Cost</th>
+            </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white" id="user-trips">
+                {{ $totalFlightHours := 0 }}
+                {{ range (collections.Reverse .Params.trips) }}
+                <tr data-totalcost="{{ .totalcost }}" data-startdate="{{ .startdate }}" data-flighthours="{{ .flighthours }}">
+                    <td class="relative py-2 px-2 text-sm font-medium">
+                        <a href="/trips/{{ .id }}" class="text-blue-900 hover:text-purple-900">#{{ .id }}</a>
+                    </td>
+                    <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm sm:pl-0">{{ partial "date_range.html" . }}</td>
+                    <td class="px-2 py-2 text-sm font-medium text-gray-900">{{ .route }}</td>
+                    <td class="px-2 py-2 text-sm text-gray-900">{{ printf "%s (%s)" .aircraft .regno }}</td>
+                    <td class="px-2 py-2 text-sm">{{ $nPax := len .passengers }}{{ range $i, $elm := (sort .passengers "paxno") -}}
+                        <a class="border-b border-dotted border-black" href="/passengers/{{ .personname | lower | replaceRE `[^a-z0-9']+` "-" | replaceRE `^[-']+|[-']+$` "" }}">
+                            {{ $nTok := strings.Count " " $elm.personname }}
+                            {{ $lastN := index (split $elm.personname " ") $nTok }}
+                            {{ index (split $elm.personname " ") 0 | first 1 }}. {{ if in (slice "SR" "JR" "III" "IV") $lastN }}{{index (split $elm.personname " ") (sub $nTok 1) }} {{ end }}{{ $lastN }}
+                        </a>{{ if lt $i (sub $nPax 1) }}, {{ end }}
+                        {{- end }}
+                    </td>
+                    <td class="px-2 py-2 text-sm">{{ lang.FormatNumberCustom 2 .distance }} <abbr title="nautical miles">nmi</abbr></td>
+                    {{ $totalFlightHours = add $totalFlightHours .flighthours }}
+                    <td class="px-2 py-2 text-sm text-gray-700">{{ lang.FormatNumberCustom 1 (cast.ToFloat .flighthours) }}</td>
+                    <td class="px-2 py-2 text-sm">{{ lang.FormatCurrency 2 "USD" .totalcost }}</td>
+                </tr>
+                {{ end }}
+                <tr>
+                    <td colspan="6" class="px-2 py-2 text-sm font-medium">{{ printf "Total %d trips" .Params.totaltrips }}</td>
+                    <td class="px-2 py-2 text-sm">{{ lang.FormatNumberCustom 1 (cast.ToFloat $totalFlightHours) }}</td>
+                    <td class="px-2 py-2 text-sm font-semibold">{{ lang.FormatCurrency 2 "USD" .Params.totaltripcost }}</td>
+                </tr>
+                <tr>
+                    <td colspan="7" class="px-2 py-2 text-sm text-right text-gray-700">est. Federal Excise Tax<sup>&dagger;</sup></td>
+                    <td class="px-2 py-2 text-sm text-gray-700">{{ lang.FormatCurrency 2 "USD" (mul .Params.totaltripcost 0.075) }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<p class="text-center text-gray-400">&dagger; : Federal Excise Tax is only an estimate of the actual, at 7.5%.</p>
+<div class="hidden">
+    <code>
+        {{ printf "%#v" .Params }}
+    </code>
+</div>
+{{ end }}
+
+{{ define "page_scripts" }}
+<script type="text/javascript">
+    let tripsList = document.getElementById("user-trips");
+    let trips = Array.from(tripsList.querySelectorAll("tr[data-startdate]"));
+    let sortRadio = document.querySelectorAll("input[name=list-radio]");
+    sortRadio.forEach(function (radio) {
+        radio.addEventListener("change", function (e) {
+            let sortOrder = e.target.value;
+            trips.sort(function (a, b) {
+                switch(sortOrder) {
+                    case "totalcost":
+                        return b.dataset.totalcost - a.dataset.totalcost;
+                    case "flighthours":
+                        return b.dataset.flighthours - a.dataset.flighthours;
+                    case "startdate":
+                    default:
+                        return b.dataset.startdate.localeCompare(a.dataset.startdate);
+                }
+            });
+            trips.forEach(function (trip) {
+                tripsList.appendChild(trip);
+            });
+
+            tripsList.querySelectorAll("tr:not([data-startdate])").forEach(function (trip) {
+                tripsList.appendChild(trip);
+            });
+        });
+    });
+</script>
+{{ end }}

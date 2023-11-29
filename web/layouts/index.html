@@ -1,0 +1,90 @@
+{{ define "main" }}
+{{ partial "navbar.html" . }}
+<div class="max-w-6xl mx-auto pb-16">
+    {{ $pages := where (where .Site.Pages "Section" "trips") "Params.id" "!=" nil }}
+    {{ $pages = $pages.ByParam "startdate" }}
+    {{ $pages = $pages.Reverse }}
+
+    {{ $wvupax := where (where (where .Site.Pages "Section" "passengers") "Params.name" "!=" nil) "Params.persontype" "wvu" }}
+    {{ $wvupax = $wvupax.ByParam "totaltrips" }}
+    {{ $wvupax = $wvupax.Reverse }}
+
+    {{ $mostRecentTrip := first 1 $pages }}
+    {{ $latestTrip := (index $mostRecentTrip 0).Params.startdate }}
+
+    {{ $oldestTrip := last 1 $pages }}
+    {{ $firstDate := (index $oldestTrip 0).Params.startdate }}
+
+    {{ $totalTripCost := 0 }}
+    {{ range $i, $e := $pages }}
+    {{ $totalTripCost = add $totalTripCost $e.Params.totalcost }}
+    {{ end }}
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
+            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">What is this website?</h2>
+            <div class="mt-6 flex flex-col gap-x-8 gap-y-20 lg:flex-row">
+                <div class="lg:w-full lg:max-w-2xl lg:flex-auto">
+                    <p class="text-xl leading-8 text-gray-600">
+                        <a href="https://wvu.edu" target="_blank" rel="noopener" class="underline hover:text-gray-700">West Virginia University</a> has an open-ended contract with <a href="https://www.ljaviation.com/" target="_blank" rel="noopener" class="underline hover:text-gray-700">L.J. Aviation</a> for chartering private aircraft.
+                        The administrators at WVU use this service often quite generously, racking up over $10 million
+                        in flight costs in the last 10 years.
+                        <br><br>This website makes searchable the invoices, itineraries, passenger manifests, and justifications for many of these flights.
+                    </p>
+                    <p class="mt-10 max-w-xl text-base leading-7 text-gray-700">
+                        While this website provides a pretty way to <a href="/search" class="underline text-blue-700">search</a> and browse the flight data, it is not the only way to access it.
+                        Advanced users may prefer to perform SQL queries directly on the SQLite database <a href="https://l.abs.codes/data/wvu-data/flights" class="underline text-blue-700">using Datasette</a>.
+                        This project's source code and the original records FOIA'd from the West Virginia State Auditor's Office are available <a href="https://github.com/AustinDizzy/wvu-flights" class="underline text-blue-700">on GitHub</a> under the <a href="https://creativecommons.org/publicdomain/zero/1.0/legalcode" target="_blank" rel="noopener" class="underline text-blue-700">Creative Commons Zero (Public Domain)</a> license.
+                    </p>
+                    <p class="mt-10 max-w-xl text-base leading-7 text-gray-700">
+                        Authenticity of the invoiced amounts can be publicly verified by searching vendor payments on the <a href="https://www.wvcheckbook.gov" target="_blank" rel="noopener" class="underline text-blue-700">West Virginia Checkbook</a> for "L J AVIATION" and cross-referencing invoice month. WVU and LJ Aviation are on Net 15 payment terms.
+                    </p>
+                    <p class="mt-10 max-w-xl text-base leading-7 text-gray-700">
+                        Please report any errors or issues to the <a href="https://github.com/AustinDizzy/wvu-flights/issues" target="_blank" rel="noopener" class="underline text-blue-700">GitHub issues tracker</a>, or by sending an email to the mailing list at <a href="https://lists.sr.ht/~abs/wvu-flights" class="underline text-blue-700">{{ .Site.Data.meta.contact_email }}</a>.
+                    </p>
+                </div>
+                <div class="lg:flex lg:flex-auto lg:justify-center">
+                    <dl class="w-64 space-y-8 xl:w-80">
+                        <div class="flex flex-col-reverse gap-y-4">
+                            <dt class="text-base leading-7 text-gray-600">
+                                Number of Known Trips from<br>
+                                <a class="underline" href="{{ (index $oldestTrip 0).RelPermalink }}">{{ $firstDate }}</a> to <a class="underline" href="{{ (index $mostRecentTrip 0).RelPermalink }}">{{ $latestTrip }}</a>
+                            </dt>
+                            <dd class="text-5xl font-semibold tracking-tight text-gray-900">
+                                <a href="/trips/" class="border-b border-dotted hover:border-solid border-black">
+                                    {{ len (where (where .Site.RegularPages "Section" "trips") "Params.id" "!=" nil) }}
+                                </a>
+                            </dd>
+                        </div>
+                        <div class="flex flex-col-reverse gap-y-4">
+                            <dt class="text-base leading-7 text-gray-600">
+                                Total Cost of Known Flights
+                            </dt>
+                            <dd class="text-5xl font-semibold tracking-tight text-gray-900">
+                                <a href="/trips/most-expensive/" class="border-b border-dotted hover:border-solid border-black">
+                                    {{ $totalTripCost | lang.FormatCurrency 2 "USD" }}
+                                </a>
+                            </dd>
+                        </div>
+                        <div class="flex flex-col-reverse gap-y-4">
+                            <dt class="text-base leading-7 text-gray-600">
+                                Number of Known Passengers
+                            </dt>
+                            <dd class="text-5xl font-semibold tracking-tight text-gray-900">
+                                <a href="/passengers" class="border-b border-dotted hover:border-solid border-black">
+                                    {{ len $wvupax }}
+                                </a>
+                            </dd>
+                        </div>
+                        <hr>
+                        <div class="flex flex-col-reverse gap-y-4">
+                            <dt class="text-base leading-7 text-gray-600">
+                                Last updated: {{ dateFormat "January 2, 2006 3:04 PM" .Site.Data.meta.last_updated }}
+                            </dt>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ end }}

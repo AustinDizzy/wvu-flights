@@ -1,0 +1,29 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+.pagination {
+  @apply flex items-center justify-center;
+}
+
+.page-item {
+  @apply inline-block;
+}
+
+.page-link {
+  @apply inline-block border;
+  @apply border-gray-300;
+  @apply px-3;
+  @apply py-2;
+  @apply mx-1;
+  @apply text-gray-700;
+  @apply no-underline;
+  @apply rounded-sm;
+  @apply hover:border-gray-500;
+  @apply hover:bg-slate-200;
+}
+
+.page-item.active > .page-link {
+  @apply bg-slate-200;
+  @apply border-gray-500;
+}
