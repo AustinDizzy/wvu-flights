@@ -5,12 +5,14 @@
     * download the current [flights.db (534.1 MB)](https://l.abs.codes/data/wvu-data/flights.db)
 * a web-accessible way to browse and query the database (with rich forms and SQL queries) using the [Datsette](https://datasette.io) project
     * see https://l.abs.codes/data/wvu-data/flights
+* a static website built with [Hugo](https://gohugo.io) to display trip, passenger, and invoice data in an enriched way with support for basic text searches
+    * see https://wvu-flights.pages.dev
 * a simple command-line tool to help project admins manage database updates from the various formats (in scanned PDFs) as used by the [WVU Office of Procurement Contracting & Payment Services](https://procurement.wvu.edu/) and the [West Virginia State Auditor's Office](https://www.wvsao.gov/).
     * see [./cmd/wvuflights](./cmd/wvuflights/)
 
-### Questions, Comments
+### Questions & Comments
 
-Issues are open, and pull requests are welcome. Public questions & comments also available via email mailing list at `~abs/wvu-flights@lists.sr.ht`.
+See the [Frequently Asked Questions](https://github.com/AustinDizzy/wvu-flights/wiki/Frequently-Asked-Questions) in the repo wiki. Public questions & comments also available via email mailing list at `~abs/wvu-flights@lists.sr.ht`.
 
 ### License
 ![Creative Commons Zero v1.0](https://licensebuttons.net/p/zero/1.0/88x15.png)
