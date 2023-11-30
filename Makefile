@@ -2,7 +2,7 @@ build:
 	go build -o flights ./cmd/wvuflights
 
 download-data:
-	curl -o flights.db https://github.com/AustinDizzy/wvu-flights/releases/latest/download/flights.db
+	curl -o flights.db -sL https://github.com/AustinDizzy/wvu-flights/releases/latest/download/flights.db
 
 sync:
 	./flights --db flights.db sync --web web
