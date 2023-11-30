@@ -65,7 +65,7 @@ func tripAdd(c *cli.Context) error {
 			Label: "Trip ID",
 			// use Validate to check if input is valid ID
 			Validate: func(input string) error {
-				re := regexp.MustCompile(`^X?\d+$`)
+				re := regexp.MustCompile(`^X?\d+(\-\d)?$`)
 				if !re.MatchString(input) {
 					return errors.New("invalid ID format")
 				}

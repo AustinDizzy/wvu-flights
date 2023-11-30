@@ -3,6 +3,7 @@
 flights
 temp_*.pdf
 web/content/trips/[0-9]*
+web/content/trips/X*
 web/content/invoices/*
 web/content/passengers/*
 !web/content/passengers/frequent-flyers.md

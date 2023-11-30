@@ -25,6 +25,7 @@
     <p class="leading-5 text-center">{{ if eq .Params.invoicetype "month" }}monthly{{ else }}trip{{ end }} invoice</p>
     <hr class="my-2">
     <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+        {{ if gt .Params.totaltrips 0 }}
         <table class="table-auto divide-y divide-gray-300 mx-auto">
             <thead>
             <tr>
@@ -109,5 +110,8 @@
             </tr>
             </tbody>
         </table>
+        {{ else }}
+        <p class="text-center text-gray-400 text-sm">No trips were loaded for this invoice.</p>
+        {{ end }}
     </div>
 </div>

@@ -131,6 +131,7 @@ func (a *AirportLookup) RouteToImage(route string) ([]byte, error) {
 func cleanRouteStr(route string) string {
 	route = strings.ToUpper(route)
 	route = regexp.MustCompile(`-RON\([0-9]+\)`).ReplaceAllString(route, "")
+	route = regexp.MustCompile(`^RON\([0-9]+\)-`).ReplaceAllString(route, "")
 
 	segments := strings.Split(route, "-")
 	res := []string{}
