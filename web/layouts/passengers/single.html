@@ -27,11 +27,11 @@
                     <div class="col-span-3">{{ lang.FormatNumberCustom 2 .Params.totaltripdistance }} <abbr title="nautical miles">nmi</abbr></div>
                 </li>
                 <li class="grid grid-cols-5 mb-2">
-                    <div class="font-semibold col-span-2">Passenger Cost</div>
+                    <div class="font-semibold col-span-2"><abbr title="The share of trip cost for this passenger from all trips they have been on.">Passenger Cost</abbr></div>
                     <div class="col-span-3">{{ lang.FormatCurrency 2 "USD" $paxCost }}</div>
                 </li>
                 <li class="grid grid-cols-5 mb-2">
-                    <div class="font-semibold col-span-2">Total Trip Cost</div>
+                    <div class="font-semibold col-span-2"><abbr title="The total cost of all trips this passenger has been on.">Total Trip Cost</abbr></div>
                     <div class="col-span-3">{{ lang.FormatCurrency 2 "USD" .Params.totaltripcost }}</div>
                 </li>
             </ol>
