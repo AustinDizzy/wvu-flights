@@ -1,3 +1,4 @@
 baseURL = 'https://wvu-flights.pages.dev'
 languageCode = 'en-us'
 title = 'WVU Flights'
+disablePathToLower = true
