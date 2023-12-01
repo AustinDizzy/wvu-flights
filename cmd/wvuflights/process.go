@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/austindizzy/wvu-flights/internal/wvuflights"
 	flights "github.com/austindizzy/wvu-flights/internal/wvuflights"
 	"gopkg.in/yaml.v3"
 	"gorm.io/gorm/clause"
@@ -128,7 +129,7 @@ func saveTripToFile(trip flights.Trip, dir string) error {
 		}
 	}
 
-	cr := cleanRouteStr(trip.Route)
+	cr := wvuflights.CleanRouteStr(trip.Route)
 	routeImg := fmt.Sprintf("%s/static/img/routes/%s.png", dir, cr)
 	if _, err := os.Stat(routeImg); err == nil {
 		// file exists
@@ -191,7 +192,7 @@ func savePersonToFile(person flights.Person, dir string) error {
 		return err
 	}
 
-	f, err := os.Create(fmt.Sprintf("%s/%s.md", dirName, toSlug(person.Name)))
+	f, err := os.Create(fmt.Sprintf("%s/%s.md", dirName, wvuflights.ToSlug(person.Name)))
 	if err != nil {
 		return err
 	}

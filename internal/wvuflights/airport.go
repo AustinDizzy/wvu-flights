@@ -6,7 +6,6 @@ import (
 	"io"
 	"math"
 	"net/http"
-	"regexp"
 	"strconv"
 	"strings"
 )
@@ -81,7 +80,7 @@ func (a *AirportLookup) ToNames(route string) (map[string]string, error) {
 }
 
 func (a *AirportLookup) RouteToImage(route string) ([]byte, error) {
-	route = cleanRouteStr(route)
+	route = CleanRouteStr(route)
 	segments := strings.Split(route, "-")
 	if len(segments) < 2 {
 		return nil, fmt.Errorf("invalid route")
@@ -128,27 +127,8 @@ func (a *AirportLookup) RouteToImage(route string) ([]byte, error) {
 	return io.ReadAll(resp.Body)
 }
 
-func cleanRouteStr(route string) string {
-	route = strings.ToUpper(route)
-	route = regexp.MustCompile(`-RON\([0-9]+\)`).ReplaceAllString(route, "")
-	route = regexp.MustCompile(`^RON\([0-9]+\)-`).ReplaceAllString(route, "")
-
-	segments := strings.Split(route, "-")
-	res := []string{}
-
-	for i := 0; i < len(segments); i++ {
-		res = append(res, segments[i])
-
-		for i+1 < len(segments) && segments[i] == segments[i+1] {
-			i++
-		}
-	}
-
-	return strings.Join(res, "-")
-}
-
 func (a *AirportLookup) RouteToDistance(route string) (float64, error) {
-	route = cleanRouteStr(route)
+	route = CleanRouteStr(route)
 
 	segments := strings.Split(route, "-")
 
