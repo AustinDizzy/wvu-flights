@@ -1,9 +1,9 @@
 <div class="border-b border-gray-300 py-1 mb-8">
-<div class="flex max-w-6xl mx-auto">
-    <nav class="flex-1 py-4" aria-label="Breadcrumb">
-      <ol role="list" class="flex items-center space-x-6">
+  <div class="max-w-6xl mx-auto">
+    <nav class="flex flex-col sm:flex-row py-4" aria-label="Breadcrumb">
+      <ol role="list" class="flex flex-wrap items-center space-x-6 mx-auto mb-2 sm:m-0 w-fit">
         <li>
-          <div class="flex">
+          <div class="flex items-center">
             <a href="/" class="text-sm font-medium text-gray-500 hover:text-gray-700">Home</a>
           </div>
         </li>
@@ -132,20 +132,20 @@
         </li>
         {{ end }}
       </ol>
+      {{ if (ne .Params.layout "search") }}
+      <div class="relative mt-2 flex flex-wrap items-center mx-auto sm:ml-auto sm:mr-0 w-fit">
+        <form action="/search" method="GET">
+          <input type="text" name="q" id="search" class="block w-full rounded-md border-0 py-1.5 pl-2 pr-14 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Search trips...">
+          <div class="absolute inset-y-0 right-0 flex py-1.5 mx-1.5">
+            <button class="inline-flex items-center rounded border border-gray-200 px-1 font-sans text-xs text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+      {{ end }}
     </nav>
-    {{ if (ne .Params.layout "search") }}
-    <div class="relative mt-2 flex items-center">
-      <form action="/search" method="GET">
-        <input type="text" name="q" id="search" class="block w-full rounded-md border-0 py-1.5 pl-2 pr-14 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Search trips...">
-        <div class="absolute inset-y-0 right-0 flex py-1.5">
-          <button class="inline-flex items-center rounded border border-gray-200 px-1 font-sans text-xs text-gray-400">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-            </svg>
-          </button>
-        </div>
-      </form>
-    </div>
-    {{ end }}
   </div>
 </div>
