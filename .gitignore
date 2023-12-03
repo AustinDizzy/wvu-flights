@@ -10,10 +10,6 @@ web/content/passengers/*
 !web/content/passengers/most-miles.md
 .env
 
-data/
-!web/data
-!data/schema.sql
-
 # Node deps
 web/node_modules/*
 
