@@ -90,7 +90,7 @@
                 <div class="font-semibold col-span-2">Total</div>
                 <div class="col-span-3">{{ $total | lang.FormatCurrency 2 "USD" }}</div>    
               </li>
-              {{ if ne .Params.numpax 0 }}
+              {{ if gt .Params.numpax 1 }}
               <li class="grid grid-cols-5 mt-2 text-gray-500">
                 <div class="font-medium col-span-2">(per passenger)</div>
                 <div class="col-span-3">{{ (div $total .Params.numpax ) | lang.FormatCurrency 2 "USD" }}</div>
