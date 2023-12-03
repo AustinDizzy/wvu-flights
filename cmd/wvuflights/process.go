@@ -237,7 +237,7 @@ func savePersonToFile(person flights.Person, dir string) error {
 		if endDate > _max_date || dateRange[0] > _max_date {
 			_max_date = max(endDate, dateRange[0])
 			for _, p := range trip.Passengers {
-				if p.PersonName == person.Name {
+				if p.PersonName == person.Name && p.Department != "" && p.VPDiv != "" {
 					lastDept = p.Department
 					lastVPDiv = p.VPDiv
 				}
