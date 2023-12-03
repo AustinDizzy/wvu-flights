@@ -1,9 +1,11 @@
 {{ define "main" }}
 {{ partial "navbar.html" . }}
 {{ $paxCost := 0 }}
+{{ $carbonEmx := 0.0 }}
 {{ range .Params.trips }}
     {{ if gt .numpax 0 }}
         {{ $paxCost = add $paxCost (div .totalcost .numpax) }}
+        {{ $carbonEmx = add $carbonEmx (div (float .carbon) .numpax) }}
     {{ end }}
 {{ end }}
 <div class="max-w-6xl mx-auto pb-16">
@@ -56,6 +58,17 @@
                 </ol>
             </div>
             {{ end }}
+            <div class="relative border border-gray-300 bg-white p-6 pb-2 mt-6 rounded-md col">
+                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white px-4">
+                  <span class="text-md font-semibold">Carbon Footprint</span>
+                </div>
+                <ol class="max-w-sm">
+                    <li class="grid grid-cols-5 mb-2">
+                        <div class="font-semibold col-span-2">CO<sub>2</sub> Emissions</div>
+                        <div class="col-span-3">{{ lang.FormatNumberCustom 2 (div $carbonEmx 1000000) }} metric tons</div>
+                    </li>
+                </ol>
+            </div>
         </div>
     </div>
     <hr class="my-4">

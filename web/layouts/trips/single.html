@@ -110,7 +110,22 @@
               <div class="text-sm"><b>$</b> The cost of this flight is greater than <a href="https://tuition.wvu.edu/" class="underline" target="_blank">one year of tuition</a>.</div>
             </div>
             {{ end }}
-            <p class="text-gray-400 mt-4">&dagger; Federal Excise Tax is only an estimate of the actual, at 7.5%. It is not included in the total.</p>
+            <p class="text-gray-400 mt-4 text-[80%]">&dagger; Federal Excise Tax is only an estimate of the actual, at 7.5%. It is not included in the total.</p>
+          </div>
+          <div class="relative border border-gray-300 bg-white p-8 mt-6 rounded-md">
+            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white px-4">
+              <span class="text-sm font-semibold">Carbon Footprint</span>
+            </div>
+            <ol>
+              <li class="grid grid-cols-5">
+                <div class="font-semibold col-span-2">Fuel Burned</div>
+                <div class="col-span-3">{{ lang.FormatNumber 2 .Params.fuelburn }} gal</div>
+              </li>
+              <li class="grid grid-cols-5">
+                <div class="font-semibold col-span-2">CO<sub>2</sub> Emitted</div>
+                <div class="col-span-3">{{ lang.FormatNumber 2 (div .Params.carbon 1000000) }} metric tons</div>
+              </li>
+            </ol>
           </div>
         </div>
       </div>

@@ -75,6 +75,7 @@ func countTrips(c *cli.Context) error {
 	count := 0
 	totalCost := 0.0
 	totalDistance := 0.0
+	totalCarbon := 0
 
 	al, _ := flights.NewAirportLookup()
 	for _, trip := range trips {
@@ -85,7 +86,7 @@ func countTrips(c *cli.Context) error {
 		}
 
 		match := true
-		for dest, _ := range locations {
+		for dest := range locations {
 			if !slices.Contains(dests, dest) {
 				match = false
 				break
@@ -100,6 +101,7 @@ func countTrips(c *cli.Context) error {
 				return err
 			}
 			totalDistance += dist
+			totalCarbon += trip.GetCarbonFootprint()
 		}
 	}
 
@@ -107,6 +109,7 @@ func countTrips(c *cli.Context) error {
 	fmt.Printf("Total Trips: %d\n", count)
 	fmt.Printf("Total Cost: $%.2f\n", totalCost)
 	fmt.Printf("Total Distance: %.2f nmi\n", totalDistance)
+	fmt.Printf("Total Carbon Footprint: %d gCO2\n", totalCarbon)
 
 	return nil
 }

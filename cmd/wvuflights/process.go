@@ -33,6 +33,16 @@ func saveTripToFile(trip flights.Trip, dir string) error {
 		db.Save(&trip)
 	}
 
+	if trip.CarbonFootprint <= 0 {
+		trip.CarbonFootprint = trip.GetCarbonFootprint()
+		db.Save(&trip)
+	}
+
+	fb := float64(wvuflights.GetAircraftFuelBurn(trip.Aircraft))
+	if fb != -1 {
+		fb = fb * trip.FlightHours
+	}
+
 	var destinations []string
 	locations, err := al.ToNames(trip.Route)
 	if err != nil {
@@ -61,6 +71,8 @@ func saveTripToFile(trip flights.Trip, dir string) error {
 		Aircraft:     trip.Aircraft,
 		Destinations: destinations,
 		Distance:     trip.Distance,
+		Carbon:       trip.CarbonFootprint,
+		FuelBurn:     fb,
 		RegNo:        trip.RegNo,
 		NumPax:       trip.NumPax,
 		Passengers:   trip.Passengers,
@@ -251,6 +263,7 @@ func savePersonToFile(person flights.Person, dir string) error {
 			Route:       trip.Route,
 			Aircraft:    trip.Aircraft,
 			Distance:    dist,
+			Carbon:      trip.CarbonFootprint,
 			RegNo:       trip.RegNo,
 			NumPax:      trip.NumPax,
 			Passengers:  trip.Passengers,

@@ -40,6 +40,8 @@ type tripData struct {
 	Aircraft      string
 	Destinations  []string
 	Distance      float64
+	Carbon        int
+	FuelBurn      float64
 	RegNo         string
 	NumPax        int
 	Passengers    []flights.TripPassenger
