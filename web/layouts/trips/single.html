@@ -119,7 +119,7 @@
             <ol>
               <li class="grid grid-cols-5">
                 <div class="font-semibold col-span-2">Fuel Burned</div>
-                <div class="col-span-3">{{ lang.FormatNumber 2 .Params.fuelburn }} gal</div>
+                <div class="col-span-3">{{ strings.TrimSuffix ".00" (lang.FormatNumber 2 .Params.fuelburn) }} gal</div>
               </li>
               <li class="grid grid-cols-5">
                 <div class="font-semibold col-span-2">CO<sub>2</sub> Emitted</div>
