@@ -43,13 +43,13 @@
                     </p>
                 </div>
                 <div class="lg:flex lg:flex-auto lg:justify-center text-center mx-auto sm:m-0 sm:text-justify sm:order-2 order-1">
-                    <dl class="w-64 space-y-8 xl:w-80">
+                    <dl class="space-y-8">
                         <div class="flex flex-col-reverse gap-y-4">
                             <dt class="text-base leading-7 text-gray-600">
                                 Number of Known Trips from<br>
                                 <a class="underline" href="{{ (index $oldestTrip 0).RelPermalink }}">{{ $firstDate }}</a> to <a class="underline" href="{{ (index $mostRecentTrip 0).RelPermalink }}">{{ $latestTrip }}</a>
                             </dt>
-                            <dd class="text-5xl font-semibold tracking-tight text-gray-900">
+                            <dd class="sm:text-5xl text-4xl font-semibold tracking-tight text-gray-900">
                                 <a href="/trips/" class="border-b border-dotted hover:border-solid border-black">
                                     {{ len (where (where .Site.RegularPages "Section" "trips") "Params.id" "!=" nil) }}
                                 </a>
@@ -59,7 +59,7 @@
                             <dt class="text-base leading-7 text-gray-600">
                                 Total Cost of Known Flights
                             </dt>
-                            <dd class="text-5xl font-semibold tracking-tight text-gray-900">
+                            <dd class="sm:text-5xl text-4xl font-semibold tracking-tight text-gray-900">
                                 <a href="/trips/most-expensive/" class="border-b border-dotted hover:border-solid border-black">
                                     {{ $totalTripCost | lang.FormatCurrency 2 "USD" }}
                                 </a>
@@ -69,7 +69,7 @@
                             <dt class="text-base leading-7 text-gray-600">
                                 Number of Known Passengers
                             </dt>
-                            <dd class="text-5xl font-semibold tracking-tight text-gray-900">
+                            <dd class="sm:text-5xl text-4xl font-semibold tracking-tight text-gray-900">
                                 <a href="/passengers" class="border-b border-dotted hover:border-solid border-black">
                                     {{ len $wvupax }}
                                 </a>
@@ -77,7 +77,7 @@
                         </div>
                         <hr>
                         <div class="flex flex-col-reverse gap-y-4">
-                            <dt class="text-base leading-7 text-gray-600">
+                            <dt class="sm:text-base text-sm leading-7 text-gray-600">
                                 Last updated: {{ dateFormat "January 2, 2006 3:04 PM" .Site.Data.meta.last_updated }}
                             </dt>
                         </div>
