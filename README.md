@@ -2,7 +2,7 @@
 
 
 * a SQLite(3) database of flight records from [West Virginia University](https://wvu.edu)
-    * download the current [flights.db (534.1 MB)](https://l.abs.codes/data/wvu-data/flights.db)
+    * download the current [flights.db (307 MB)](https://l.abs.codes/data/wvu-data/flights.db)
 * a web-accessible way to browse and query the database (with rich forms and SQL queries) using the [Datsette](https://datasette.io) project
     * see https://l.abs.codes/data/wvu-data/flights
 * a static website built with [Hugo](https://gohugo.io) to display trip, passenger, and invoice data in an enriched way with support for basic text searches
