@@ -1,4 +1,4 @@
-{{ $total := math.Sum .Params.cost.billing_amount .Params.cost.fuel .Params.cost.domestic_tax .Params.cost.landing_fees }}
+{{ $total := math.Sum .Params.cost.billing_amount .Params.cost.fuel .Params.cost.domestic_tax .Params.cost.landing_fees .Params.cost.crew_expense }}
 <a href="{{ .RelPermalink }}"
     class="block max-w-xl mx-auto p-4 border border-gray-300 hover:border-gray-500 hover:bg-slate-200 rounded my-4" data-id="{{ .Params.id }}" data-cost="{{ $total }}" data-date="{{ .Params.startdate }}">
     <div class="grid grid-cols-6 mt-2 text-lg font-bold">
