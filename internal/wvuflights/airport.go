@@ -72,7 +72,12 @@ func (a *AirportLookup) ToNames(route string) (map[string]string, error) {
 		} else if err != nil {
 			return nil, err
 		} else {
-			names[s] = fmt.Sprintf("%s, %s", airport.City, airport.State)
+			switch s {
+			case "BKW":
+				names[s] = "Beckley, WV"
+			default:
+				names[s] = fmt.Sprintf("%s, %s", airport.City, airport.State)
+			}
 		}
 	}
 
