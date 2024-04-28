@@ -15,4 +15,6 @@ build-site:
 
 deploy: build download-data sync install-deps build-site
 
+build-local: build sync install-deps build-site
+
 .PHONY: build download-data sync install-deps build-site deploy
