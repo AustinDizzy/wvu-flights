@@ -4,7 +4,7 @@
 {{ partial "navbar.html" . }}
 <div class="lg:flex lg:items-center lg:justify-between max-w-6xl mx-auto pb-8">
   <div class="min-w-0 flex-1">
-    <h2 class="mt-2 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight mb-8 text-center sm:text-start">{{ .Params.route }}</h2>
+    <h2 class="mt-2 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight mb-8 text-center">{{ .Params.routestr }}</h2>
     {{ with .Resources.GetMatch "route.png" }}
     <div class="pb-8">
       <img src="{{ .RelPermalink }}" class="sm:w-[75%] mx-auto border border-gray-300" />

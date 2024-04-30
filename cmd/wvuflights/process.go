@@ -53,6 +53,29 @@ func saveTripToFile(trip flights.Trip, dir string) error {
 		destinations = append(destinations, l)
 	}
 
+	var (
+		// route pieces
+		rp = strings.Split(flights.CleanRouteStr(trip.Route), "-")
+		// route str pieces
+		rsp []string
+		// route string (trip title)
+		routeStr string
+	)
+
+	for i, c := range rp {
+		if (i == 0 || i == len(rp)-1) && c == "LBE" {
+			continue
+		}
+
+		rsp = append(rsp, strings.TrimSuffix(locations[c], ", WV"))
+	}
+
+	if len(rsp) > 1 && rsp[0] == rsp[len(rsp)-1] {
+		routeStr = fmt.Sprintf("%s (round trip)", strings.Join(rsp[:len(rsp)-1], " to "))
+	} else {
+		routeStr = strings.Join(rsp, " to ")
+	}
+
 	invoiceName := regexp.MustCompile(`;?([0-9]{4}-[0-9]{2})-[0-9]{2}$`).FindAllStringSubmatch(trip.Date, 1)[0][1]
 	var nInvoice int64
 
@@ -68,6 +91,7 @@ func saveTripToFile(trip flights.Trip, dir string) error {
 		StartDate:    dateRange[0],
 		EndDate:      endDate,
 		Route:        trip.Route,
+		RouteStr:     routeStr,
 		Aircraft:     trip.Aircraft,
 		Destinations: destinations,
 		Distance:     trip.Distance,

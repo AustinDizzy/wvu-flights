@@ -37,6 +37,7 @@ type tripData struct {
 	StartDate     string
 	EndDate       string
 	Route         string
+	RouteStr      string
 	Aircraft      string
 	Destinations  []string
 	Distance      float64
