@@ -2,7 +2,7 @@
 
 
 * a SQLite(3) database of flight records from [West Virginia University](https://wvu.edu)
-    * download the current [flights.db (307 MB)](https://l.abs.codes/data/wvu-data/flights.db)
+    * download the current [flights.db (345 MB)](https://github.com/AustinDizzy/wvu-flights/releases/download/latest/flights.db)
 * a web-accessible way to browse and query the database (with rich forms and SQL queries) using the [Datsette](https://datasette.io) project
     * see https://l.abs.codes/data/wvu-data/flights
 * a static website built with [Hugo](https://gohugo.io) to display trip, passenger, and invoice data in an enriched way with support for basic text searches
@@ -23,7 +23,7 @@ This project is released into the public domain via Creative Commons Zero. See t
 
 All information has been sourced from legal requests made under W.Va. Code § 29B-1-1 (WVFOIA)), and the intent is to keep the database updated on a rolling basis as information is released.
 
-Current data includes 678 flights spanning from **Oct 5, 2016** to **Jul 26, 2023**, with over $7 million dollars worth of flight costs. See [./data/schema.sql](./data/schema.sql) for the database schema.
+Current data includes 816 flights spanning from **Jul 1, 2015** to **Nov 12, 2023**, with over $8.5 million dollars worth of flight costs. See [./data/schema.sql](./data/schema.sql) for the database schema.
 
 <table>
 <tr><th>trips by month</th></tr>
@@ -31,6 +31,10 @@ Current data includes 678 flights spanning from **Oct 5, 2016** to **Jul 26, 202
 
 | months  | total_cost | num_trips |
 |---------|------------|-----------|
+| 2023-11 | $43,394    |         2 |
+| 2023-10 | $112,852   |         9 |
+| 2023-09 | $8,667     |         1 |
+| 2023-08 | $47,724    |         6 |
 | 2023-07 | $43,296    |         5 |
 | 2023-06 | $157,875   |        10 |
 | 2023-05 | $112,671   |        13 |
@@ -120,7 +124,7 @@ Current data includes 678 flights spanning from **Oct 5, 2016** to **Jul 26, 202
 | 2015-10 | $93,832    |         8 |
 | 2015-08 | $80,582    |        13 |
 | 2015-07 | $149,070   |        16 |
-| **Total**   | **$8,384,827** |       **798** |
+| **Total**   | **$8,597,466** |       **816** |
 
 <details> 
   <summary>View SQL Query</summary>
