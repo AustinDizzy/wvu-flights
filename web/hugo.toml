@@ -2,3 +2,7 @@ baseURL = 'https://wvu-flights.pages.dev'
 languageCode = 'en-us'
 title = 'WVU Flights'
 disablePathToLower = true
+
+[params]
+    trackingURL = 'https://tr.absec.org/script.js'
+    trackingID = 'e2e7269f-c3f7-438f-aa09-fbd908a82f3c'
